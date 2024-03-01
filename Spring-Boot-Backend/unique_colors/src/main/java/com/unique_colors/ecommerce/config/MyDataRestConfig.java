@@ -2,10 +2,12 @@ package com.unique_colors.ecommerce.config;
 
 import com.unique_colors.ecommerce.entity.Product;
 import com.unique_colors.ecommerce.entity.ProductCategory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
