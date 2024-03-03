@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../common/product';
 import { ActivatedRoute } from '@angular/router';
+import { CartItem } from '../../common/cart-item';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -9,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './product-list.component.css',
 })
 export class ProductListComponent implements OnInit {
+
   products: Product[] = [];
   currentCategoryId: number = 1;
   previousCategoryId: number = 1;
@@ -22,9 +25,10 @@ export class ProductListComponent implements OnInit {
   previousKeyWord:string ="";
 
   constructor(
-    private productServices: ProductService,
-    private route: ActivatedRoute
-  ) {}
+              private productServices: ProductService,
+              private route: ActivatedRoute,
+              private cartService:CartService
+            ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -41,13 +45,13 @@ export class ProductListComponent implements OnInit {
       this.handleListProducts();
     }
   }
+  
   handleSearchProducts() {
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
     if(this.previousKeyWord != keyword){
       this.thePageNumber = 1;      
     }
-
 
     this.previousKeyWord = keyword;
 
@@ -102,5 +106,11 @@ export class ProductListComponent implements OnInit {
       this.thePageSize = data.page.size;
       this.theTotalElements = data.page.totalElements;
     }
+  }
+
+  addToCart(theProduct: Product) {
+    const theCartItem = new CartItem(theProduct);
+
+    this.cartService.addToCart(theCartItem);
   }
 }
