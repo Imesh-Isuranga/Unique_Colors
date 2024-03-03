@@ -20,12 +20,14 @@ export class CartService {
 
 
     if(this.cartItem.length>0){
-      for(let tempCartItems of this.cartItem){
+      /*for(let tempCartItems of this.cartItem){
         if(tempCartItems === theCardItem){
           existingCartItem = tempCartItems;
           break;
         }
-      }
+      }*/
+
+      existingCartItem = this.cartItem.find(tempCartItem => tempCartItem.id === theCardItem.id);
   
       alreadyExistingInCart = (existingCartItem != undefined);
     }
@@ -37,6 +39,25 @@ export class CartService {
       }
     
     this.computeCartTotal();
+  }
+
+  decrementQuantity(theCardItem:CartItem){
+    theCardItem.quatity--;
+
+    if(theCardItem.quatity === 0){
+      this.remove(theCardItem);
+    }else{
+      this.computeCartTotal();
+    }
+  }
+
+  remove(theCardItem:CartItem){
+    const itemIndex = this.cartItem.findIndex(tempCartItem => tempCartItem.id === theCardItem.id);
+
+    if(itemIndex>-1){
+      this.cartItem.splice(itemIndex,1);
+      this.computeCartTotal();
+    }
   }
 
   computeCartTotal(){
